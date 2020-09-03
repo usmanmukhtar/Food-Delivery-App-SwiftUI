@@ -22,7 +22,7 @@ struct ContentView_Previews: PreviewProvider {
 struct FoodDeliverView: View {
     var columns = Array(repeating: GridItem(.flexible()), count: 2)
     @State var categoryIndex = 0
-    
+    @State var text = ""
     var body: some View {
         ZStack {
             VStack (alignment: .leading){
@@ -50,7 +50,7 @@ struct FoodDeliverView: View {
                         }
                     }.zIndex(1)
                     
-                    SearchBar(text: .constant(""))
+                    SearchBar(text: $text)
                         .padding(.top, 30)
                     
                 }
@@ -67,7 +67,7 @@ struct FoodDeliverView: View {
                 
                 ScrollView(.vertical, showsIndicators: false){
                     LazyVGrid(columns: columns, spacing: 20){
-                        ForEach(fData){ food in
+                        ForEach(fData.filter({ "\($0)".contains(text) || text.isEmpty})){ food in
                             ZStack(alignment: Alignment(horizontal: .trailing, vertical: .bottom)){
                                 VStack {
                                     Image("\(food.image)")
